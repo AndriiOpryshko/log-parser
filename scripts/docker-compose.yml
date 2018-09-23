@@ -1,0 +1,10 @@
+version: '2'
+
+services:
+  logserv_mongodb:
+    image: 'mongo:4.0.2'
+    volumes:
+      - ./testdb:/data/db
+    ports:
+      - "27017:27017"
+    command: mongod --storageEngine wiredTiger --auth

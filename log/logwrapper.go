@@ -3,14 +3,14 @@ package log
 import (
 	"fmt"
 	"github.com/op/go-logging"
+	"io/ioutil"
+	"net"
 	"net/http"
 	"os"
-	"io/ioutil"
 	"strings"
-	"net"
 )
 
-var log = logging.MustGetLogger("blitz_api")
+var log = logging.MustGetLogger("logserv")
 
 // Log format
 var format = logging.MustStringFormatter(
@@ -22,7 +22,7 @@ var (
 	appname = "log-parser"
 )
 
-func getExternalIp() string{
+func getExternalIp() string {
 	errMsg := "Cannot get external ip. "
 	resp, err := http.Get("http://myexternalip.com/raw")
 	if err != nil {
@@ -68,14 +68,14 @@ func init() {
 
 }
 
-func msgPrefix(){
+func msgPrefix() {
 	fmt.Println()
 }
 
 // Log for info
 func Info(msg string) {
 	msgPrefix()
-	log.Infof("%s%s", msg,postfix)
+	log.Infof("%s%s", msg, postfix)
 }
 
 // Log for notice

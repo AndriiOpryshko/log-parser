@@ -1,6 +1,7 @@
 mongodb:
  ip: "127.0.0.1"
  port: "27017"
+ db_auth: "admin"
  db_name: "logs"
  user_name: "logger"
  password: "eiko1Aeraiceechi"

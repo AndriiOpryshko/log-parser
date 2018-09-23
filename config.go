@@ -1,16 +1,16 @@
 package main
 
 import (
-	"path/filepath"
-	"log-parser/log"
-	"io/ioutil"
-	"gopkg.in/yaml.v2"
 	"fmt"
+	"gopkg.in/yaml.v2"
+	"io/ioutil"
+	"log-parser/log"
+	"path/filepath"
 )
 
 // main configs
 type Config struct {
-	MongoDbConfig  MongoDBConf   `yaml:"mongodb"`
+	MongoDbConfig   MongoDBConf    `yaml:"mongodb"`
 	ParseLogsConfig []ParseLogConf `yaml:"logs"`
 }
 
@@ -18,6 +18,7 @@ type Config struct {
 type MongoDBConf struct {
 	Ip       string `yaml:"ip"`
 	Port     string `yaml:"port"`
+	DbAuth   string `yaml:"db_auth"`
 	DbName   string `yaml:"db_name"`
 	UserName string `yaml:"user_name"`
 	Password string `yaml:"password"`
@@ -26,13 +27,11 @@ type MongoDBConf struct {
 // log config
 type ParseLogConf struct {
 	AbsPath string `yaml:"abs_path"`
-	Type string `yaml:"log_type"`
+	Type    string `yaml:"log_type"`
 }
-
 
 // Config global object
 var config *Config = &Config{}
-
 
 // Init all configs from config.yml
 func InitConfig() {
@@ -60,7 +59,8 @@ func GetMongoConnectionString() string {
 }
 
 // Get db credentials
-func GetDbCred() (dbname, userName, password string) {
+func GetDbCred() (dbauth, dbname, userName, password string) {
+	dbauth = config.MongoDbConfig.DbAuth
 	dbname = config.MongoDbConfig.DbName
 	userName = config.MongoDbConfig.UserName
 	password = config.MongoDbConfig.Password
@@ -68,6 +68,6 @@ func GetDbCred() (dbname, userName, password string) {
 }
 
 // Get parse logs config
-func GetParseLogsConfig() []ParseLogConf{
+func GetParseLogsConfig() []ParseLogConf {
 	return config.ParseLogsConfig
 }
