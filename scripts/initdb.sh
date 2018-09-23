@@ -2,7 +2,8 @@
 
 docker-compose up -d
 
-sleep(2)
+echo "sleeps 10 second"
+sleep 10
 
 
 ContainerName=scripts_logserv_mongodb_1
@@ -19,3 +20,5 @@ var user = {
 db.createUser(user);
 exit
 EOF
+
+echo "add user $User with pas $Pass for auth db admin"
