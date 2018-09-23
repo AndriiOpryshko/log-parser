@@ -5,6 +5,7 @@ import (
 	"log-parser/log"
 	"io/ioutil"
 	"gopkg.in/yaml.v2"
+	"fmt"
 )
 
 // main configs
@@ -49,4 +50,24 @@ func InitConfig() {
 
 	log.Debugf("%+v", *config)
 	log.Info("Success init config")
+}
+
+// Get mongo connection string
+func GetMongoConnectionString() string {
+	conStr := fmt.Sprintf("%s:%s", config.MongoDbConfig.Ip, config.MongoDbConfig.Port)
+	log.Debugf("Mondo connection string: %s", conStr)
+	return conStr
+}
+
+// Get db credentials
+func GetDbCred() (dbname, userName, password string) {
+	dbname = config.MongoDbConfig.DbName
+	userName = config.MongoDbConfig.UserName
+	password = config.MongoDbConfig.Password
+	return
+}
+
+// Get parse logs config
+func GetParseLogsConfig() []ParseLogConf{
+	return config.ParseLogsConfig
 }
