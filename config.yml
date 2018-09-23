@@ -7,8 +7,8 @@ mongodb:
  password: "eiko1Aeraiceechi"
 logs:
  -
-  abs_path: "/home/test1.log"
+  path: "./testlogs/1.log"
   log_type: "first_format"
  -
-   abs_path: "/home/test2.log"
+   path: "./testlogs/2.log"
    log_type: "second_format"

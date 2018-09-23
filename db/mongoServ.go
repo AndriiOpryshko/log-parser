@@ -9,6 +9,7 @@ import (
 )
 
 const (
+	// Mongo collections
 	logC = "logs"
 )
 
@@ -17,6 +18,7 @@ type mongoService struct {
 	dbName  string
 }
 
+// New instance for mongo service
 func NewMongoService(conStr, dbAuth, dbName, userName, pas string) *mongoService {
 	log.Info("Init mongo db")
 
@@ -44,6 +46,7 @@ func NewMongoService(conStr, dbAuth, dbName, userName, pas string) *mongoService
 	}
 }
 
+// for wrighting to any collection
 func (self mongoService) WrightToCollection(name, colName string, obj interface{}) error {
 	session := self.session.Copy()
 	defer session.Close()
@@ -63,19 +66,21 @@ func (self mongoService) WrightToCollection(name, colName string, obj interface{
 	return nil
 }
 
+// Struct stored in logC
 type Log struct {
 	Time   time.Time `json:"log_time"`   // (Date) - время записи из лог файла
-	Msg    string `json:"log_msg"`    // (String) - текст сообщения из лог файла
-	Path   string `json:"file_name"`  // (String) - путь к файлу из которого получено сообщение
-	Format string `json:"log_format"` // (String) - формат лога (first_format | second_format)
+	Msg    string    `json:"log_msg"`    // (String) - текст сообщения из лог файла
+	Path   string    `json:"file_name"`  // (String) - путь к файлу из которого получено сообщение
+	Format string    `json:"log_format"` // (String) - формат лога (first_format | second_format)
 }
 
+// Wright log
 func (self mongoService) WrightLog(time time.Time, msg, path, format string) error {
 	log := Log{
-		Time:time,
-		Msg:msg,
-		Path:path,
-		Format:format,
+		Time:   time,
+		Msg:    msg,
+		Path:   path,
+		Format: format,
 	}
 	error := self.WrightToCollection("log", logC, log)
 

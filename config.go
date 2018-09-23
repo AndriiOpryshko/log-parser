@@ -5,13 +5,14 @@ import (
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"log-parser/log"
+	"log-parser/logserv"
 	"path/filepath"
 )
 
 // main configs
 type Config struct {
-	MongoDbConfig   MongoDBConf    `yaml:"mongodb"`
-	ParseLogsConfig []ParseLogConf `yaml:"logs"`
+	MongoDbConfig   *MongoDBConf    `yaml:"mongodb"`
+	ParseLogsConfig []*ParseLogConf `yaml:"logs"`
 }
 
 // mongo config
@@ -26,8 +27,18 @@ type MongoDBConf struct {
 
 // log config
 type ParseLogConf struct {
-	AbsPath string `yaml:"abs_path"`
+	AbsPath string `yaml:"path"`
 	Type    string `yaml:"log_type"`
+}
+
+// getter abspath
+func (self *ParseLogConf) GetAbsPath() string {
+	return self.AbsPath
+}
+
+// getter log type
+func (self *ParseLogConf) GetLogType() string {
+	return self.Type
 }
 
 // Config global object
@@ -47,7 +58,10 @@ func InitConfig() {
 		log.Criticalf("Unmarshal: %v", err)
 	}
 
-	log.Debugf("%+v", *config)
+	log.Debugf("Mongo conf %+v", *config.MongoDbConfig)
+	for i, parseLogConf := range config.ParseLogsConfig {
+		log.Debugf("Parse log %d is %+v", i+1, *parseLogConf)
+	}
 	log.Info("Success init config")
 }
 
@@ -68,6 +82,20 @@ func GetDbCred() (dbauth, dbname, userName, password string) {
 }
 
 // Get parse logs config
-func GetParseLogsConfig() []ParseLogConf {
+func GetParseLogsConfig() []*ParseLogConf {
 	return config.ParseLogsConfig
+}
+
+// Convert logs config from  config to  logs config of log parsing service
+func ConvToLogConf(parsedLogConfig []*ParseLogConf) []logserv.LogConf {
+	logConf := make([]logserv.LogConf, len(parsedLogConfig))
+
+	for i, v := range parsedLogConfig {
+		// if path was relative
+		v.AbsPath, _ = filepath.Abs(v.AbsPath)
+
+		logConf[i] = logserv.LogConf(v)
+	}
+
+	return logConf
 }
