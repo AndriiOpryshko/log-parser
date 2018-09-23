@@ -1,1 +1,5 @@
-package log_parser
+package main
+
+func main() {
+	InitConfig()
+}

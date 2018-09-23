@@ -1,0 +1,13 @@
+mongodb:
+ ip: "127.0.0.1"
+ port: "27017"
+ db_name: "logs"
+ user_name: "logger"
+ password: "eiko1Aeraiceechi"
+logs:
+ -
+  abs_path: "/home/test1.log"
+  log_type: "first_format"
+ -
+   abs_path: "/home/test2.log"
+   log_type: "second_format"
