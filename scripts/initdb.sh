@@ -2,6 +2,8 @@
 
 docker-compose up -d
 
+sleep(2)
+
 
 ContainerName=scripts_logserv_mongodb_1
 User=logger
